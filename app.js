@@ -10,6 +10,7 @@ import globalRouter from "./routers/globalRouter";
 import routes from "./routes";
 const app = express();
 
+app.set("view engine","pug");
 //middleware의 위치가 중요하다 
 //route를 처리하기 전에 위치해야함
 app.use(cookieParser());
