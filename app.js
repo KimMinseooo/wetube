@@ -4,10 +4,11 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import { localsMiddleware } from "./middlewares";
+import routes from "./routes";
 import userRouter  from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
-import routes from "./routes";
 const app = express();
 
 app.set("view engine","pug");
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(helmet());
 app.use(morgan("dev"));
+app.use(localsMiddleware);
 
 
 //누군가 /user경로에 접속하면 이 router 전체를 사용하겠다
