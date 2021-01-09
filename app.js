@@ -15,13 +15,14 @@ app.set("view engine","pug");
 //middleware의 위치가 중요하다 
 //route를 처리하기 전에 위치해야함
 app.use(cookieParser());
+//bodyParser를 사용하지않으면 정보를 얻을수없음. req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(localsMiddleware);
 
-//video가 안나오는것을 해결
+//video가 안나오는것을 해결 Helmet의 보안문제
 app.use(function(req, res, next) {
     res.setHeader("Content-Security-Policy", "script-src 'self' https://archive.org");
     return next();
