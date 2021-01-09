@@ -1,4 +1,6 @@
-export const home = (req, res ) => res.render("home", {pageTitle:"Home",potato:12345});
+import {videos} from "../db"
+
+export const home = (req, res ) => res.render("home", {pageTitle:"Home", videos});
 export const search =(req, res) =>{
     //const searchingBy =req.query.term; 과 같음
     const {

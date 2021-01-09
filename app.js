@@ -21,6 +21,11 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(localsMiddleware);
 
+//video가 안나오는것을 해결
+app.use(function(req, res, next) {
+    res.setHeader("Content-Security-Policy", "script-src 'self' https://archive.org");
+    return next();
+    });
 
 //누군가 /user경로에 접속하면 이 router 전체를 사용하겠다
 app.use(routes.home,globalRouter);
