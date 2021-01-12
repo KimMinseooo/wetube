@@ -11,14 +11,15 @@ import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
 const app = express();
 
+app.use(helmet());
 app.set("view engine","pug");
+app.use("/uploads", express.static("uploads"));
 //middleware의 위치가 중요하다 
 //route를 처리하기 전에 위치해야함
 app.use(cookieParser());
 //bodyParser를 사용하지않으면 정보를 얻을수없음. req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(helmet());
 app.use(morgan("dev"));
 app.use(localsMiddleware);
 
