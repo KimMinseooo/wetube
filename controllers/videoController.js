@@ -4,7 +4,7 @@ import Video from "../models/Video";
 export const home = async(req, res ) =>{
     //await 가 끝나기 전까진 render를 하지않음 .
     try{
-        const videos = await Video.find({});
+        const videos = await Video.find({}).sort({_id: -1});
          res.render("home", {pageTitle:"Home", videos});
     } catch(error){
         console.log(error);
@@ -12,12 +12,19 @@ export const home = async(req, res ) =>{
     }
     };
 
-export const search =(req, res) =>{
+export const search = async(req, res) =>{
     //const searchingBy =req.query.term; 과 같음
     const {
         query: {term: searchingBy }
     } = req;
-    
+    let videos =[] ;
+    try{
+        videos =await Video.find({
+            title: {$regex : searchingBy, $options: "i" }
+         });
+    }catch(error){
+        console.log(error);
+    }
     res.render("search", {pageTitle:"Search", searchingBy, videos});
 };
 
