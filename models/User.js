@@ -6,7 +6,19 @@ const UserSchema = new mongoose.Schema({
     email : String,
     avatarUrl : String,
     facebookId : Number,
-    githubId : Number 
+    githubId : Number ,
+    comments : [
+        {
+        type :mongoose.Schema.Types.ObjectId,
+        ref:"Comment"
+        }
+    ],
+    videos : [
+        {
+        type :mongoose.Schema.Types.ObjectId,
+        ref:"Video"
+        }
+    ]
 });
 
 //Schema 추가 사용자인증을 사용하기 위함
