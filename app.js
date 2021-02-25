@@ -1,7 +1,7 @@
 // express를 호출하고 node_modules에서 import 해서 app변수를 선언해서 express를 실행 
 import express from "express";
 import morgan from "morgan";
-import helmet from "helmet";
+import helmet, { contentSecurityPolicy } from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import passport from "passport";
@@ -19,8 +19,15 @@ import "./passport";
 const app = express();
 
 const CookieStore =MongoStore(session);
+app.use(
+    helmet(
+    //     {
+    //     contentSecurityPolicy : false,
+    //   referrerPolicy: { policy: "no-referrer" },
+    // }
+    )
+  );
 
-app.use(helmet());
 app.set("view engine","pug");
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("static"));
@@ -48,6 +55,7 @@ app.use(function(req, res, next) {
     res.setHeader("Content-Security-Policy", "script-src 'self' https://archive.org");
     return next();
     });
+
 
 //누군가 /user경로에 접속하면 이 router 전체를 사용하겠다
 app.use(routes.home,globalRouter);

@@ -13,6 +13,7 @@ const OUTPUT_DIR =path.join(__dirname, "static");
 // Mini-css-extract-plugin : 가져온 부분만 추출해준다 .
 const config = { 
     entry: ["@babel/polyfill",ENTRY_FILE],
+    devtool: "source-map",
     mode: MODE,
     module: {
         rules : [
