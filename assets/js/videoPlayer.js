@@ -2,6 +2,7 @@ const videoContainer =document.getElementById("jsVideoPlayer");
 const videoPlayer = document.querySelector("#jsVideoPlayer video");
 const playBtn= document.getElementById("jsPlayButton");
 const volumeBtn = document.getElementById("jsVolumeBtn");
+const fullScrnBtn = document.getElementById("jsFullScreen");
 
 function handlePlayClick() {
     if(videoPlayer.paused) {
@@ -23,9 +24,25 @@ function handleVolumeClick() {
     }
 }
 
+function exitFullScreen() {
+    fullScrnBtn.innerHTML = '<i class="fas fa-expand"></i>'; 
+    fullScrnBtn.addEventListener("click", goFullScreen);
+    document.webkitExitFullscreen();
+}
+
+// fullScreen은 true , false로 값을 체크할수없음 
+// 그러므로 클릭시 반응으로 함수를 만들어야함
+function goFullScreen() {
+    videoContainer.webkitRequestFullscreen();
+    fullScrnBtn.innerHTML = '<i class="fas fa-compress"></i>';
+    fullScrnBtn.removeEventListener("click", goFullScreen);
+    fullScrnBtn.addEventListener("click", exitFullScreen);
+}
+
 function init() {
     playBtn.addEventListener("click", handlePlayClick);
     volumeBtn.addEventListener("click", handleVolumeClick);
+    fullScrnBtn.addEventListener("click", goFullScreen);
 }
 
 if(videoContainer) {
