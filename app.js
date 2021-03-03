@@ -13,6 +13,7 @@ import routes from "./routes";
 import userRouter  from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
+import apiRouter from "./routers/apiRouter";
 
 import "./passport";
 
@@ -21,10 +22,9 @@ const app = express();
 const CookieStore =MongoStore(session);
 app.use(
     helmet(
-    //     {
-    //     contentSecurityPolicy : false,
-    //   referrerPolicy: { policy: "no-referrer" },
-    // }
+        {
+        contentSecurityPolicy : false,
+    }
     )
   );
 
@@ -61,5 +61,6 @@ app.use(function(req, res, next) {
 app.use(routes.home,globalRouter);
 app.use(routes.users, userRouter);
 app.use(routes.videos,videoRouter);
+app.use(routes.api , apiRouter);
 
 export default app;
