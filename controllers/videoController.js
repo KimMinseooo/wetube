@@ -55,6 +55,7 @@ export const videoDetail =async(req, res) =>{
     } =req;
     try{
         const video =await Video.findById(id).populate("creator").populate("comments");
+        console.log(video.creator.toString());
     res.render("videoDetail", {pageTitle : video.title, video});
     } catch(error){
         res.redirect(routes.home);
@@ -67,7 +68,7 @@ export const videoDetail =async(req, res) =>{
      } =req;
      try{
         const video =await Video.findById(id);
-        if(video.creator !== req.user.id) {
+        if(String(video.creator) !== req.user.id) {
             throw Error();
         } else {
             res.render("editVideo", {pageTitle: `Edit ${video.title}`, video});
@@ -98,7 +99,7 @@ export const deleteVideo =async(req, res) => {
     } =req;
     try{
         const video =await Video.findById(id);
-        if(video.creator !== req.user.id) {
+        if(video.creator != req.user.id) {
             throw Error();
         } else {
             await Video.findOneAndRemove({_id: id});
@@ -150,4 +151,38 @@ export const postAddComment =async( req, res) => {
     }finally{ 
         res.end();
     }
+}
+
+
+export const postDeleteComment =async(req, res) => {
+    const {
+        params : {id},
+        body: {targetComment},
+   } =req;
+    try{
+        const video =await Video.findById(id);
+        const comment =await Comment.find({text: targetComment});
+        console.log(video.comments);
+        console.log(comment);
+        const commentIndex =video.comments.some((value,index) => {
+            if(comment[0].id === value){
+                return index;
+            };
+            return index;
+        });
+
+        const remove = video.comments.splice(commentIndex,1);
+
+        await Comment.findOneAndRemove({text: targetComment});
+        console.log(comment);
+        console.log(video.comments);
+        console.log(video);
+        video.save();
+    }catch(error) {
+        console.log(error);
+        res.status(400);
+    }   finally{
+        res.end();
+    }
+    
 }
