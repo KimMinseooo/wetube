@@ -77,6 +77,41 @@ export const postFacebookLogin =(req, res) => {
     res.redirect(routes.home);
 };
 
+export const kakaoLogin =passport.authenticate("kakao");
+
+export const postKakaoLonIn =( req ,res ) => {
+    res.redirect(routes.home);
+}
+export const kakaoLoginCallback = async( _, __, profile , cb) => {
+    const {
+        id,
+        username: name ,
+        _json : {
+            properties: {profile_image },
+            kakao_account: { email },
+        },
+    } = profile;
+    try{
+        const user =await User.findOne({ email });
+    if (user) {
+        user.kakaoId =id;
+        user.save();
+        return cb(null , user);
+    } 
+        const newUser = await User.create({
+            email,
+            name,
+            kakaoId : id,
+            avartarUrl : profile_image,
+        });
+        return db(null, newUser);
+    
+    } catch( error) {
+        return cb(error);
+    }
+}
+
+
 export const logout = (req, res) => {
     req.logout();
     res.redirect(routes.home);
